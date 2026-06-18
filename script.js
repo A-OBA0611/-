@@ -25,6 +25,8 @@ const TRIALS_PER_SPAN = 2;
 const STOP_WRONG_COUNT = 2;
 
 let answerTimeoutId = null;
+let answerDeadline = null;
+let answerTimeExtended = false;
 
 const MODE_LABELS_RUBY = {
   forward: '<ruby>同<rt>おな</rt></ruby>じ<ruby>順番<rt>じゅんばん</rt></ruby>で<ruby>答<rt>こた</rt></ruby>える<ruby>問題<rt>もんだい</rt></ruby>',
@@ -535,6 +537,8 @@ function clearAnswerTimeout() {
     clearTimeout(answerTimeoutId);
     answerTimeoutId = null;
   }
+  answerDeadline = null;
+  answerTimeExtended = false;
 }
 
 function scheduleAnswerTimeout() {
@@ -545,10 +549,35 @@ function scheduleAnswerTimeout() {
   }
 
   const limitSeconds = getTimeLimit(currentMode, currentSequence.length);
+  answerDeadline = Date.now() + limitSeconds * 1000;
+  answerTimeExtended = false;
+
   answerTimeoutId = setTimeout(() => {
     answerTimeoutId = null;
     handleTimeLimitExceeded();
   }, limitSeconds * 1000);
+}
+
+function extendAnswerTimeoutByGracePeriod() {
+  if (phase !== "main" || !answerDeadline || answerTimeExtended) {
+    return;
+  }
+
+  const now = Date.now();
+  const nextDeadline = Math.max(answerDeadline, now) + 5000;
+  const delayMs = nextDeadline - now;
+
+  answerDeadline = nextDeadline;
+  answerTimeExtended = true;
+
+  if (answerTimeoutId !== null) {
+    clearTimeout(answerTimeoutId);
+  }
+
+  answerTimeoutId = setTimeout(() => {
+    answerTimeoutId = null;
+    handleTimeLimitExceeded();
+  }, delayMs);
 }
 
 function getTimeLimit(mode, span) {
@@ -619,6 +648,7 @@ function submitAnswer() {
     message.innerHTML = `
       <ruby>数字<rt>すうじ</rt></ruby>をぜんぶ<ruby>入<rt>い</rt></ruby>れてから、「<ruby>決定<rt>けってい</rt></ruby>」をおしてください。
     `;
+    extendAnswerTimeoutByGracePeriod();
     return;
   }
 
