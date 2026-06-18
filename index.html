@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数字チャレンジ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div id="app">
+   <h1><ruby>数字<rt>すうじ</rt></ruby>チャレンジ</h1>
+
+   <div id="startScreen">
+  <p class="instruction">
+    これから、<ruby>数字<rt>すうじ</rt></ruby>が1つずつ<ruby>画面<rt>がめん</rt></ruby>に<ruby>出<rt>で</rt></ruby>ます。<br>
+    <ruby>数字<rt>すうじ</rt></ruby>が<ruby>出<rt>で</rt></ruby>ているあいだは、よく<ruby>見<rt>み</rt></ruby>ておぼえてください。<br>
+    「<ruby>答<rt>こた</rt></ruby>えてください」と<ruby>画面<rt>がめん</rt></ruby>に<ruby>出<rt>で</rt></ruby>たら、<ruby>数字<rt>すうじ</rt></ruby>ボタンをタップします。
+  </p>
+
+  <p class="small">
+    はじめに<ruby>練習<rt>れんしゅう</rt></ruby>をします。<ruby>練習<rt>れんしゅう</rt></ruby>がおわったら<ruby>本番<rt>ほんばん</rt></ruby>です。
+  </p>
+
+  <h2><ruby>出席番号<rt>しゅっせきばんごう</rt></ruby>を<ruby>入<rt>い</rt></ruby>れてください</h2>
+  <div id="attendanceDisplay">＿</div>
+
+  <div id="attendanceButtons" class="buttonArea"></div>
+
+  <div class="buttonArea">
+    <button class="subButton" onclick="backspaceAttendance()">
+      <ruby>1つ戻る<rt>ひとつもどる</rt></ruby>
+    </button>
+    <button class="dangerButton" onclick="clearAttendance()">
+      <ruby>全部消す<rt>ぜんぶけす</rt></ruby>
+    </button>
+    <button class="mainButton" onclick="startTask()">
+      はじめる
+    </button>
+  </div>
+</div>
+
+    <div id="taskScreen" class="hidden">
+      <h2 id="modeTitle"></h2>
+      <div id="progress"></div>
+      <div id="message"></div>
+      <div id="digitDisplay" class="hidden"></div>
+
+      <div id="answerArea" class="hidden">
+  <p>あなたの<ruby>答<rt>こた</rt></ruby>え</p>
+  <div id="answerDisplay"></div>
+
+  <div id="numberButtons" class="buttonArea"></div>
+
+  <div class="buttonArea">
+    <button class="subButton" onclick="backspaceAnswer()">
+      <ruby>1つ戻る<rt>ひとつもどる</rt></ruby>
+    </button>
+    <button class="dangerButton" onclick="clearAnswer()">
+      <ruby>全部消す<rt>ぜんぶけす</rt></ruby>
+    </button>
+    <button id="submitAnswerButton" class="mainButton" onclick="submitAnswer()">
+      <ruby>決定<rt>けってい</rt></ruby>
+    </button>
+  </div>
+</div>
+
+ <div id="endScreen" class="hidden">
+  <h2>ありがとうございました</h2>
+  <p class="instruction">
+    これで<ruby>数字<rt>すうじ</rt></ruby>チャレンジはおわりです。<br>
+    タブレットをそのまま<br>
+    つくえの<ruby>上<rt>うえ</rt></ruby>において、<br>
+    <ruby>先生<rt>せんせい</rt></ruby>の<ruby>指示<rt>しじ</rt></ruby>を<br>
+    <ruby>待<rt>ま</rt></ruby>ってください。
+  </p>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
